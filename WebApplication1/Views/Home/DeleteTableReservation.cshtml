@@ -1,0 +1,10 @@
+﻿<label style="text-align: center; display: flex; justify-content: center">@ViewData["Message"]</label>
+<br />
+<br />
+<form asp-action="OnDeleteTableReservation" asp-controller="Home" style="display: flex; flex-direction: column; text-align: center; justify-content: center; align-items: center;">
+    <label>Editing a table reservation</label>
+    <br />
+    <input type="text" name="id" placeholder="Table Reservation ID" style="width: 300px;" class="form-control" />
+    <br />
+    <input type="submit" style="width: 100px;" class="btn btn-primary" />
+</form>

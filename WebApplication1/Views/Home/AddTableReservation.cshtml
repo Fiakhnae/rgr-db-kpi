@@ -1,0 +1,14 @@
+﻿<label style="text-align: center; display: flex; justify-content: center">@ViewData["Message"]</label>
+<br />
+<br />
+<form asp-action="OnAddTableReservation" asp-controller="Home" style="display: flex; flex-direction: column; text-align: center; justify-content: center; align-items: center;">
+    <label>Adding a new table reservation</label>
+    <br />
+    <input type="text" name="tableId" placeholder="Table ID" style="width: 300px;" class="form-control" />
+    <br />
+    <input type="text" name="userId" placeholder="User ID" style="width: 300px;" class="form-control" />
+    <br />
+    <input type="datetime" name="reservationDateTime" placeholder="Reservation Date Time" style="width: 300px;" class="form-control" />
+    <br />
+    <input type="submit" style="width: 100px;" class="btn btn-primary" />
+</form>

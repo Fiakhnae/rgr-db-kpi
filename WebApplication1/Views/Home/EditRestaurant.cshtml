@@ -1,0 +1,16 @@
+﻿<label style="text-align: center; display: flex; justify-content: center">@ViewData["Message"]</label>
+<br />
+<br />
+<form asp-action="OnEditRestaurant" asp-controller="Home" style="display: flex; flex-direction: column; text-align: center; justify-content: center; align-items: center;">
+    <label>Editing a restaraunt</label>
+    <br />
+    <input type="text" name="id" placeholder="Id" style="width: 300px;" class="form-control" />
+    <br />
+    <input type="text" name="name" placeholder="Name" style="width: 300px;" class="form-control" />
+    <br />
+    <input type="text" name="adress" placeholder="Address" style="width: 300px;" class="form-control" />
+    <br />
+    <input type="text" name="cuisineType" placeholder="Cuisine Type" style="width: 300px;" class="form-control" />
+    <br />
+    <input type="submit" style="width: 100px;" class="btn btn-primary" />
+</form>
