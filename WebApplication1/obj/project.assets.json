@@ -168,11 +168,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\university\\k3s1\\db\\rgr1\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
+      "projectUniqueName": "E:\\university\\k3s1\\db\\rgr-db-kpi\\rgr-db-kpi\\WebApplication1\\WebApplication1.csproj",
       "projectName": "WebApplication1",
-      "projectPath": "E:\\university\\k3s1\\db\\rgr1\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
+      "projectPath": "E:\\university\\k3s1\\db\\rgr-db-kpi\\rgr-db-kpi\\WebApplication1\\WebApplication1.csproj",
       "packagesPath": "C:\\Users\\dark_requiem\\.nuget\\packages\\",
-      "outputPath": "E:\\university\\k3s1\\db\\rgr1\\WebApplication1\\WebApplication1\\obj\\",
+      "outputPath": "E:\\university\\k3s1\\db\\rgr-db-kpi\\rgr-db-kpi\\WebApplication1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\dark_requiem\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -8,7 +8,6 @@ namespace WebApplication1.Controllers
 {
     public class HomeController : Controller
     {
-        private static string ConnectionString = "Server=localhost;Port=5432;User ID=postgres;Password=bd2109#;Database=db_lab1;";
         private static string message = "";
         string date = "";
 
@@ -22,107 +21,39 @@ namespace WebApplication1.Controllers
             return View("AddRestaurant");
         }
 
-       public IActionResult GenerateRestaurant()
-        {
-            string restaurantName = "";
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
-            {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"SELECT md5(random()::text);", connection);
-                NpgsqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    reader.Read();
-                    restaurantName = reader.GetValue(0).ToString();
-                }
+        public IActionResult GenerateRestaurant() {
+            try {
+                Database.GenerateRestaurant();
+                ViewData["Message"] = "Successfully generated";
+                return View("Generate");
             }
-
-            string cuisineType = "";
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
-            {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"SELECT md5(random()::text);", connection);
-                NpgsqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    reader.Read();
-                    cuisineType = reader.GetValue(0).ToString();
-                }
+            catch {
+                return View("ErrorPage");
             }
-
-            string adress = "";
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
-            {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"SELECT md5(random()::text);", connection);
-                NpgsqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    reader.Read();
-                    adress = reader.GetValue(0).ToString();
-                }
-            }
-
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
-            {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"INSERT INTO \"restaurants\"(\"name\", \"adress\", \"cuisinetype\") VALUES('{restaurantName}', '{cuisineType}', '{adress}')", connection);
-                command.ExecuteNonQuery();
-            }
-
-            ViewData["Message"] = "Successfully generated";
-            return View("Generate");
         }
 
         public IActionResult GenerateTable()
         {
-            string tablenumber = "";
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
-            {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"SELECT Floor(random() * 4 + 2020)::int", connection);
-                NpgsqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    reader.Read();
-                    tablenumber = reader.GetValue(0).ToString();
-                }
+            try {
+                Database.GenerateTable();
+                ViewData["Message"] = "Successfully generated";
+                return View("Generate");
             }
-
-            string seats = "";
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
-            {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"SELECT Floor(random() * 4 + 2020)::int", connection);
-                NpgsqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    reader.Read();
-                    seats = reader.GetValue(0).ToString();
-                }
+            catch {
+                return View("ErrorPage");
             }
-
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
-            {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"INSERT INTO \"tables\"(\"tablenumber\", \"seats\", \"restaurantid\") VALUES({tablenumber}, {seats}, 1)", connection);
-                command.ExecuteNonQuery();
-            }
-
-            ViewData["Message"] = "Successfully generated";
-            return View("Generate");
         }
 
         public IActionResult OnAddRestaurant(Restaurant restaurant)
         {
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
-            {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"INSERT INTO \"restaurants\"(\"name\", \"adress\", \"cuisinetype\") VALUES('{restaurant.name}', '{restaurant.adress}', '{restaurant.cuisineType}')", connection);
-                command.ExecuteNonQuery();
+            try {
+                Database.AddRestaurant(restaurant);
+                message = "Successfuly added";
+                return RedirectToAction("AddRestaurant");
             }
-            message = "Successfuly added";
-            return RedirectToAction("AddRestaurant");
+            catch {
+                return View("ErrorPage");
+            }
         }
         public IActionResult EditRestaurant() {
             ViewData["Message"] = message;
@@ -131,18 +62,15 @@ namespace WebApplication1.Controllers
         }
         public IActionResult OnEditRestaurant(int id, Restaurant restaurant)
         {
-            // Оновлення існуючого ресторану в базі даних за ID
-            using (var connection = new NpgsqlConnection(ConnectionString))
-            {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"UPDATE \"restaurants\" SET \"name\" = '{restaurant.name}', \"adress\" = '{restaurant.adress}', \"cuisinetype\" = '{restaurant.cuisineType}' where \"id\" = {id}", connection);
-                command.ExecuteNonQuery();
+            try {
+                Database.EditRestaurant(id, restaurant);
+                message = "Successfully edited";
+                return RedirectToAction("EditRestaurant");
             }
-            message = "Successfully edited";
-            return RedirectToAction("EditRestaurant");
+            catch {
+                return View("ErrorPage");
+            }
         }
-
-
         public IActionResult AddTable()
         {
             ViewData["Message"] = message;
@@ -150,14 +78,14 @@ namespace WebApplication1.Controllers
             return View("AddTable");
         }
         public IActionResult OnAddTable(Table table) {
-            // Додавання нового столика в базу даних
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString)) {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"INSERT INTO \"tables\"(\"tablenumber\", \"seats\", \"restaurantid\") VALUES({table.tableNumber}, {table.seats}, {table.restaurantId})", connection);
-                command.ExecuteNonQuery();
+            try {
+                Database.AddTable(table);
+                message = "Successfully added";
+                return RedirectToAction("AddTable");
             }
-            message = "Successfully added";
-            return RedirectToAction("AddTable");
+            catch {
+                return View("ErrorPage");
+            }
         }
 
         public IActionResult EditTable()
@@ -167,14 +95,14 @@ namespace WebApplication1.Controllers
             return View("EditTable");
         }
         public IActionResult OnEditTable(int id, Table table) {
-            // Оновлення існуючого столика в базі даних за ID
-            using (var connection = new NpgsqlConnection(ConnectionString)) {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"UPDATE \"restaurants\" SET \"name\" = {table.tableNumber}, \"adress\" = {table.seats}, \"cuisinetype\" = '{table.restaurantId}' where \"id\" = {id}", connection);
-                command.ExecuteNonQuery();
+            try {
+                Database.EditTable(id, table);
+                message = "Successfully edited";
+                return RedirectToAction("EditTable");
             }
-            message = "Successfully edited";
-            return RedirectToAction("EditTable");
+            catch {
+                return View("ErrorPage");
+            }
         }
         public IActionResult AddTableReservation()
         {
@@ -183,14 +111,14 @@ namespace WebApplication1.Controllers
             return View("AddTableReservation");
         }
         public IActionResult OnAddTableReservation(TableReservation reservation) {
-            // Додавання нового бронювання столика в базу даних
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString)) {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"INSERT INTO \"tablereservations\"(\"tableid\", \"userid\", \"reservationdatetime\") VALUES({reservation.tableId}, {reservation.userId}, '{reservation.reservationDateTime}')", connection);
-                command.ExecuteNonQuery();
+            try {
+                Database.AddTableReservation(reservation);
+                message = "Successfully added";
+                return RedirectToAction("AddTableReservation");
             }
-            message = "Successfully added";
-            return RedirectToAction("AddTableReservation");
+            catch {
+                return View("ErrorPage");
+            }
         }
 
         public IActionResult EditTableReservation()
@@ -200,14 +128,14 @@ namespace WebApplication1.Controllers
             return View("EditTableReservation");
         }
         public IActionResult OnEditTableReservation(int id, TableReservation reservation) {
-            // Оновлення існуючого бронювання столика в базі даних за ID
-            using (var connection = new NpgsqlConnection(ConnectionString)) {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"UPDATE \"tablereservations\" SET \"userid\" = {reservation.userId}, \"tableid\" = {reservation.tableId}, \"reservationdatetime\" = '{reservation.reservationDateTime}' where \"id\" = {id}", connection);
-                command.ExecuteNonQuery();
+            try {
+                Database.EditTableReservation(id, reservation);
+                message = "Successfully edited";
+                return RedirectToAction("EditTableReservation");
             }
-            message = "Successfully edited";
-            return RedirectToAction("EditTableReservation");
+            catch {
+                return View("ErrorPage");
+            }
         }
 
         public IActionResult DeleteTableReservation(int id)
@@ -217,14 +145,14 @@ namespace WebApplication1.Controllers
             return View("DeleteTableReservation");
         }
         public IActionResult OnDeleteTableReservation(int id) {
-            // Видалення бронювання столика з бази даних за ID
-            using (var connection = new NpgsqlConnection(ConnectionString)) {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"DELETE FROM \"tablereservations\" WHERE \"id\" = {id}", connection);
-                command.ExecuteNonQuery ();
+            try {
+                Database.DeleteTableReservation(id);
+                message = "Successfully deleted";
+                return RedirectToAction("DeleteTableReservation");
             }
-            message = "Successfully deleted";
-            return RedirectToAction("DeleteTableReservation");
+            catch {
+                return View("ErrorPage");
+            }
         }
     }
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fk8PG9qs35FHn/2drqEg2Xb0jD6VNiJWCqTG/OQpiLQAuBr9JBQ68OcsDpWnbAJcXDV6cyHcBokAi2noPNu9Gg==",
+  "dgSpecHash": "pwvt+/QKuvatxOjERuu7kkDgy7/luQJtgRKLk+TpsRXrnxiQLMkx5/wZ2urYtOXUCeWrXuxvKECTbY3WMn90Cg==",
   "success": true,
-  "projectFilePath": "E:\\university\\k3s1\\db\\rgr1\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
+  "projectFilePath": "E:\\university\\k3s1\\db\\rgr-db-kpi\\rgr-db-kpi\\WebApplication1\\WebApplication1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dark_requiem\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\dark_requiem\\.nuget\\packages\\npgsql\\7.0.6\\npgsql.7.0.6.nupkg.sha512",
