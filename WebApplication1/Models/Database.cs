@@ -5,73 +5,30 @@ namespace WebApplication1.Models {
     public static class Database {
         private static string ConnectionString = "Server=localhost;Port=5432;User ID=postgres;Password=bd2109#;Database=db_lab1;";
         public static void GenerateRestaurant() {
-            string restaurantName = "";
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString)) {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"SELECT md5(random()::text);", connection);
-                NpgsqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows) {
-                    reader.Read();
-                    restaurantName = reader.GetValue(0).ToString();
+            for (int i = 0; i < 10; i++)
+            {
+                using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
+                {
+                    connection.Open();
+                    NpgsqlCommand command = new NpgsqlCommand($"INSERT INTO \"restaurants\"(\"name\", \"adress\", \"cuisinetype\")\r\nValues((SELECT (chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int)\r\n     )),\r\n    (SELECT (chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) \r\n     )),\r\n    (SELECT (chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int) ||\r\n    chr(trunc(65 + random() * 25)::int)\r\n     )))", connection);
+                    command.ExecuteNonQuery();
                 }
+               
             }
 
-            string cuisineType = "";
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString)) {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"SELECT md5(random()::text);", connection);
-                NpgsqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows) {
-                    reader.Read();
-                    cuisineType = reader.GetValue(0).ToString();
-                }
-            }
-
-            string adress = "";
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString)) {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"SELECT md5(random()::text);", connection);
-                NpgsqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows) {
-                    reader.Read();
-                    adress = reader.GetValue(0).ToString();
-                }
-            }
-
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString)) {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"INSERT INTO \"restaurants\"(\"name\", \"adress\", \"cuisinetype\") VALUES('{restaurantName}', '{cuisineType}', '{adress}')", connection);
-                command.ExecuteNonQuery();
-            }
+          
         }
         public static void GenerateTable() {
-            string tablenumber = "";
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString)) {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"SELECT Floor(random() * 4 + 2020)::int", connection);
-                NpgsqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows) {
-                    reader.Read();
-                    tablenumber = reader.GetValue(0).ToString();
+            for(int i = 0;i < 10; i++)
+            {
+                using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString))
+                {
+                    connection.Open();
+                    NpgsqlCommand command = new NpgsqlCommand($"INSERT INTO \"tables\"(\"restaurantid\", \"tablenumber\", \"seats\")\r\nValues((Select max(\"tables\".\"restaurantid\") from \"tables\"),\r\n    (SELECT random() * 20 + 1 AS RAND_1_11),\r\n    (SELECT random() * 5 + 1 AS RAND_1_11))", connection);
+                    command.ExecuteNonQuery();
                 }
             }
 
-            string seats = "";
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString)) {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"SELECT Floor(random() * 4 + 2020)::int", connection);
-                NpgsqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows) {
-                    reader.Read();
-                    seats = reader.GetValue(0).ToString();
-                }
-            }
-
-            using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString)) {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand($"INSERT INTO \"tables\"(\"tablenumber\", \"seats\", \"restaurantid\") VALUES({tablenumber}, {seats}, 1)", connection);
-                command.ExecuteNonQuery();
-            }
         }
         public static void AddRestaurant(Restaurant restaurant) {
             using (NpgsqlConnection connection = new NpgsqlConnection(ConnectionString)) {
